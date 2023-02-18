@@ -30,16 +30,23 @@ function App() {
   
   const fetchMovies = async (searchKey, selectedGenre, releaseDate) => {
     const type = searchKey ? "search" : "discover"
-    const {data: {results}} = await axios.get(`${API_URL}/${type}/movie`, {
-      params: {
+    
+    const  params =  {
         api_key: process.env.REACT_APP_MOVIE_API_KEY,
         query: searchKey,
-        with_genres: selectedGenre,
-        "primary_release_date.gte": releaseDate,
+       
       }
 
-      
-    })
+      if (selectedGenre) {
+        params.with_genres = selectedGenre
+      }
+      if (releaseDate) {
+        params["primary_release_date.gte"] = releaseDate
+      }
+      const {data: {results}} = await axios.get(`${API_URL}/${type}/movie`, {
+        params
+      })
+    
 
    
     setMovies(results)
@@ -69,11 +76,11 @@ function App() {
   }, [])
 
 
-  // 
   
-  const renderGenres = (movie) => {
-    return movie.genres.map(genre => genre.name).join(", ");
-  };
+  
+  const renderGenre = (movie) => {
+  return movie.genres.map(genre => genre.name).join(", ");
+};
 
   const renderMovies = () => (
     
@@ -98,12 +105,16 @@ function App() {
 
 
   const renderTrailer = () => {
-    if (!selectedMovie.videos) {
-      return null;
+    if (!selectedMovie.videos.results[0]) {   
+      console.log( "No Trailer for this movie");
+      return <p>No Trailer for this movie</p>
     }
 
-    const trailer = selectedMovie.videos.results.find(vid => vid.name === 'Official Trailer')
+    const trailer = selectedMovie.videos.results?.find(vid => vid.name === 'Official Trailer')
+    console.log(trailer)
     const key = trailer ? trailer.key : selectedMovie.videos.results[0].key
+
+   
 
     return (
     <YouTube
@@ -134,16 +145,17 @@ function App() {
           <span>Movie Trailer App</span>
 
           <form className="form" onSubmit={searchMovies}>
-            <input className="search" type="text" onChange={(e) => setSearchKey(e.target.value)}/>
-            <select value={selectedGenre} onChange={(e) => setSelectedGenre(e.target.value)}>
-            <option value="">Select genre</option>
+            <input className="search" placeholder='Enter a Movie Title' type="text" onChange={(e) => setSearchKey(e.target.value)}/>
+            <select className='select-genre' value={selectedGenre} onChange={(e) => selectGenre(e.target.value)}>
+            <option className='option-genre'  value="">Select genre</option>
             {genres.map((genre) => (
-              <option key={genre.id} value={genre.id}>
+              <option className='option-genre' key={genre.id} value={genre.id}>
                 {genre.name}
               </option>
             ))}
           </select>
           <input
+            className='release-date'
             type="date"
             value={releaseDate}
             onChange={(e) => setReleaseDate(e.target.value)}
@@ -156,12 +168,12 @@ function App() {
       <div className='hero' style={{backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url('${IMAGE_PATH}${selectedMovie.backdrop_path}')`}}>
         <div className='hero-content max-center'>
           {playTrailer ? <button className={"button button--close"} onClick={()=> setPlayTrailer(false)}>Close</button> : null}
-          {selectedMovie.videos && playTrailer ? renderTrailer() :  null}
+          {selectedMovie && <>{selectedMovie.videos && playTrailer ? renderTrailer() :  null}
           <button className={"button"} onClick={() => setPlayTrailer(true)}>Play Trailer</button>
           <h1 className={"hero-title"}>{selectedMovie.title}</h1>
           {selectedMovie.release_date ? <p>{selectedMovie.release_date}</p> : null}
-          <p>Genres: {renderGenres(selectedMovie)}</p>
-          {selectedMovie.overview ? <p className={"hero-overview"}>{selectedMovie.overview}</p> : null}
+          <p>Genres: {selectedMovie && selectedMovie.genres?.map(genre => genre.name).join(", ")}</p>
+          {selectedMovie.overview ? <p className={"hero-overview"}>{selectedMovie.overview}</p> : null}</>}
         </div>
           
       </div>

@@ -114,3 +114,28 @@
   color: white;
   margin-right: 5px;
 }
+
+.select-genre {
+  border: 1px solid darkslategray;
+  outline: transparent;
+  background-color: transparent;
+  padding: 5px 10px;
+  border-radius: 25px;
+  color: white;
+  margin-right: 5px;
+}
+
+.release-date {
+  border: 1px solid darkslategray;
+  outline: transparent;
+  background-color: transparent;
+  padding: 5px 10px;
+  border-radius: 25px;
+  color: white;
+  margin-right: 5px;
+}
+
+.option-genre {
+  color: white;
+  background-color: darkslategray;
+}
