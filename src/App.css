@@ -209,3 +209,9 @@
   }
 
 }
+
+@media only screen and (max-width: 300px) {
+  .movie-cover {
+    width: 78px;
+  }
+}
