@@ -198,9 +198,14 @@
 
 
   .movie-cover {
-    width: 110px;
-    margin: 0;
+    width: 100px;
+    padding-right: 0;
+    padding-left: 0;
   }
   
+  .youtube-container {
+    width: 100vw;
+    object-fit: cover;
+  }
 
 }
