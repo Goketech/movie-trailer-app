@@ -142,7 +142,7 @@ function App() {
     <div className="App">
       <header className={"header"}>
         <div className={"header-content max-center"}>
-          <span>Movie Trailer App</span>
+          <span className='app-name'>Movie Trailer App</span>
 
           <form className="form" onSubmit={searchMovies}>
             <input className="search" placeholder='Enter a Movie Title' type="text" onChange={(e) => setSearchKey(e.target.value)}/>
@@ -178,7 +178,7 @@ function App() {
           
       </div>
 
-      <div className='container max-center'>
+      <div className='movies-grid container max-center'>
         {renderMovies()}
       </div>
     </div>
