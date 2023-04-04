@@ -3,6 +3,9 @@
 ## Introduction
 
 The movie-trailer app is a web application that allows users to search and view trailers for their favorite movies. The application is developed using React and integrated with the TMD and YouTube APIs to fetch movie trailers. The application has a responsive design that adapts to different screen sizes and features a search bar and filter option to help users navigate through the content.
+### Live Website
+
+https://movie-trailer-app-lake.vercel.app/
 
 ## Features
 
